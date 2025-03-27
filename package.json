@@ -19,7 +19,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
     "dotenv": "^16.4.6",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "aztp-client": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.17.9",
