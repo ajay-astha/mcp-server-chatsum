@@ -4,6 +4,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+import * as aztp from "aztp-client";
 
 import { ChatMessage } from "./types/chat_message.js";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
@@ -11,6 +12,12 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import dotenv from "dotenv";
 import { getChatMessages } from "./services/chat_message.js";
 import { queryChatMessagesTool } from "./services/tools.js";
+
+const aztpApiKey = process.env.AZTP_API_KEY;
+const mcpName = process.env.MCP_NAME as string;
+const aztpClient = aztp.initialize({
+  apiKey: aztpApiKey
+});
 
 const server = new Server(
   {
@@ -59,6 +66,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
+  await aztpClient.secureConnect(server, mcpName, {
+    isGlobalIdentity: false
+  });
 }
 
 dotenv.config();
